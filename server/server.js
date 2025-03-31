@@ -1,19 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const mainRouter = require("./routes/index.js");
+const { MONGODB_URI, PORT } = require("./config.js");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const MONGOURI = process.env.MONGODB_URI;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/amazon-scraper")
+  .connect(MONGODB_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
