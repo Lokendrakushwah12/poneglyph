@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer");
 
-scrapeAmazonProduct = async (url) => {
+const scrapeAmazonProduct = async (url) => {
   if (!url.includes("amazon.in")) {
     throw new Error("URL must be from Amazon India");
   }
@@ -13,7 +13,6 @@ scrapeAmazonProduct = async (url) => {
 
   try {
     const page = await browser.newPage();
-
     await page.setViewport({ width: 1366, height: 768 });
 
     await page.goto(url, {
@@ -27,71 +26,42 @@ scrapeAmazonProduct = async (url) => {
         return element ? element.textContent.trim() : defaultValue;
       };
 
-      // Helper function to get multiple elements text
-      const getMultipleTexts = (selector) => {
-        const elements = document.querySelectorAll(selector);
-        return Array.from(elements).map((el) => el.textContent.trim());
-      };
-
-      // Extract product name
       const productName = getText("#productTitle");
 
-      // Extract rating
       const ratingText = getText("span.a-icon-alt");
       const rating = ratingText ? ratingText.split(" ")[0] : "";
 
-      // Extract number of ratings
       const numRatingsText = getText("#acrCustomerReviewText");
       const numRatings = numRatingsText
         ? numRatingsText.replace(/[^0-9]/g, "")
         : "";
 
-      // Extract selling price
       const sellingPrice = getText(".a-price .a-offscreen");
 
-      // Extract total discount
-      const discountElement = document.querySelector(".savingsPercentage");
-      const totalDiscount = discountElement
-        ? discountElement.textContent.trim()
-        : "";
+      const totalDiscount =
+        getText(".savingsPercentage") || getText(".a-size-base.a-color-price");
 
-      // Extract bank offers
-      const bankOfferElements = document.querySelectorAll(
-        "#bankoffer_feature_div .a-box-inner"
-      );
-      const bankOffers = Array.from(bankOfferElements).map((el) =>
-        el.textContent.trim()
-      );
-
-      // Extract about this item
-      const aboutItemElements = document.querySelectorAll(
-        "#feature-bullets li:not(.aok-hidden)"
-      );
-      const aboutItem = Array.from(aboutItemElements)
+      const aboutItem = Array.from(
+        document.querySelectorAll("#feature-bullets li:not(.aok-hidden)")
+      )
         .map((el) => el.textContent.trim())
         .filter((text) => text && !text.includes("See more"));
 
-      // Extract product information
-      const productInfoElements = document.querySelectorAll(
-        ".a-section.a-spacing-medium .a-container tr"
-      );
       const productInfo = {};
-      productInfoElements.forEach((row) => {
-        const cells = row.querySelectorAll("td, th");
-        if (cells.length >= 2) {
-          const key = cells[0].textContent.trim();
-          const value = cells[1].textContent.trim();
-          if (key && value) {
-            productInfo[key] = value;
+      document
+        .querySelectorAll(".a-section.a-spacing-medium .a-container tr")
+        .forEach((row) => {
+          const cells = row.querySelectorAll("td, th");
+          if (cells.length >= 2) {
+            const key = cells[0].textContent.trim();
+            const value = cells[1].textContent.trim();
+            if (key && value) productInfo[key] = value;
           }
-        }
-      });
+        });
 
-      // Extract product images
-      const imageElements = document.querySelectorAll(
-        "#altImages .a-button-text img"
-      );
-      const productImages = Array.from(imageElements)
+      const productImages = Array.from(
+        document.querySelectorAll("#altImages .a-button-text img")
+      )
         .map((img) => img.src)
         .filter(
           (src) => src && !src.includes("play-icon") && !src.includes("video")
@@ -101,15 +71,11 @@ scrapeAmazonProduct = async (url) => {
       const manufacturerImages = [];
       const manufacturerSection = document.querySelector("#productDescription");
       if (manufacturerSection) {
-        const images = manufacturerSection.querySelectorAll("img");
-        manufacturerImages.push(...Array.from(images).map((img) => img.src));
-      }
-
-      // Extract AI generated customer review summary (if available)
-      let aiReviewSummary = "";
-      const aiSummaryElement = document.querySelector("#cr-lightbox-title");
-      if (aiSummaryElement) {
-        aiReviewSummary = aiSummaryElement.textContent.trim();
+        manufacturerImages.push(
+          ...Array.from(manufacturerSection.querySelectorAll("img")).map(
+            (img) => img.src
+          )
+        );
       }
 
       return {
@@ -118,14 +84,62 @@ scrapeAmazonProduct = async (url) => {
         numRatings,
         sellingPrice,
         totalDiscount,
-        bankOffers,
         aboutItem,
         productInfo,
         productImages,
         manufacturerImages,
-        aiReviewSummary,
       };
     });
+
+    let bankOffers = [];
+
+    const offersLinkExists = await page.evaluate(() => {
+      return !!document.querySelector(".vsx-offers-count");
+    });
+
+    if (offersLinkExists) {
+      console.log("Offers link exists, attempting click...");
+
+      await page.evaluate(() => {
+        const offersLink = document.querySelector(".vsx-offers-count");
+        if (offersLink) {
+          offersLink.click();
+          console.log("Clicked on the offers link.");
+        }
+      });
+
+      await page
+        .waitForSelector(".vsx-offers-count", { timeout: 5000 })
+        .catch(() => console.log("Offers sidebar didn't load within timeout"));
+
+      bankOffers = await page.evaluate(() => {
+        const offers = [];
+        document
+          .querySelectorAll(".vsx-offers-desktop-lv__item")
+          .forEach((element) => {
+            const titleElement = element.querySelector(
+              ".a-size-base-plus.a-text-bold"
+            );
+            const descriptionElement = element.querySelector(
+              "p.a-spacing-mini.a-size-base-plus"
+            );
+
+            if (titleElement && descriptionElement) {
+              offers.push({
+                title: titleElement.textContent.trim(),
+                description: descriptionElement.textContent.trim(),
+              });
+            }
+          });
+        return offers;
+      });
+
+      console.log("Extracted Bank Offers:", bankOffers);
+    } else {
+      console.log("No offers link found.");
+    }
+
+    productData.bankOffers = bankOffers;
 
     console.log("Scraping completed successfully");
     return productData;
@@ -137,6 +151,4 @@ scrapeAmazonProduct = async (url) => {
   }
 };
 
-module.exports = {
-  scrapeAmazonProduct,
-};
+module.exports = { scrapeAmazonProduct };

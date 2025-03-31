@@ -7,7 +7,6 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     const { url } = req.body;
-    console.log(`scraping started... for ${url}`);
     const products = await scrapeAmazonProduct(url);
     res.status(200).json({ products });
   } catch (error) {
