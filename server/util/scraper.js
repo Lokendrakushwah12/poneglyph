@@ -67,7 +67,6 @@ const scrapeAmazonProduct = async (url) => {
           (src) => src && !src.includes("play-icon") && !src.includes("video")
         );
 
-      // Extract manufacturer images
       const manufacturerImages = [];
       const manufacturerSection = document.querySelector("#productDescription");
       if (manufacturerSection) {
@@ -93,23 +92,25 @@ const scrapeAmazonProduct = async (url) => {
 
     let bankOffers = [];
 
-    const offersLinkExists = await page.evaluate(() => {
-      return !!document.querySelector(".vsx-offers-count");
+    const bankOfferSectionExists = await page.evaluate(() => {
+      return !!document.querySelector("#itembox-InstantBankDiscount");
     });
 
-    if (offersLinkExists) {
-      console.log("Offers link exists, attempting click...");
+    if (bankOfferSectionExists) {
+      console.log("Bank offer section found, attempting click on 14 offers...");
 
       await page.evaluate(() => {
-        const offersLink = document.querySelector(".vsx-offers-count");
+        const offersLink = document.querySelector(
+          "#itembox-InstantBankDiscount .vsx-offers-count"
+        );
         if (offersLink) {
           offersLink.click();
-          console.log("Clicked on the offers link.");
+          console.log("Clicked on the 14 offers link.");
         }
       });
 
       await page
-        .waitForSelector(".vsx-offers-count", { timeout: 5000 })
+        .waitForSelector(".vsx-offers-desktop-lv__item", { timeout: 5000 })
         .catch(() => console.log("Offers sidebar didn't load within timeout"));
 
       bankOffers = await page.evaluate(() => {
@@ -136,7 +137,7 @@ const scrapeAmazonProduct = async (url) => {
 
       console.log("Extracted Bank Offers:", bankOffers);
     } else {
-      console.log("No offers link found.");
+      console.log("No bank offer section found.");
     }
 
     productData.bankOffers = bankOffers;
