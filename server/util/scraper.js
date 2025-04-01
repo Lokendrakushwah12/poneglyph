@@ -77,6 +77,10 @@ const scrapeAmazonProduct = async (url) => {
         )
       ).map((img) => img.getAttribute("data-src") || img.getAttribute("src"));
 
+      const topReviews = Array.from(
+        document.querySelectorAll(".review-text-content span")
+      ).map((review) => review.textContent.trim());
+
       return {
         productName,
         rating,
@@ -87,6 +91,7 @@ const scrapeAmazonProduct = async (url) => {
         productInfo,
         productImages,
         manufacturerImages,
+        topReviews,
       };
     });
 

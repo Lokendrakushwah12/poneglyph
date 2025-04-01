@@ -23,7 +23,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
   },
   bankOffers: {
-    type: [String],
+    bankOffers: [{ title: String, description: String }],
   },
   aboutItem: {
     type: [String],
