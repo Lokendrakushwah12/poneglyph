@@ -1,13 +1,14 @@
+interface BankOffer {
+  offerName: string;
+  offerDetails: string;
+}
 interface Product {
   productName: string;
   rating: number;
   numRatings: number;
   sellingPrice: string;
   totalDiscount: string;
-  bankOffers: {
-    offerName: string;
-    offerDetails: string;
-  };
+  bankOffers: BankOffer[];
   aboutItem: string;
   productInfo: string[];
   productImages: string[];
@@ -16,4 +17,3 @@ interface Product {
 }
 
 export type { Product };
-
