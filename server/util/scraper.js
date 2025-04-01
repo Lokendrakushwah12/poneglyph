@@ -48,16 +48,20 @@ const scrapeAmazonProduct = async (url) => {
         .filter((text) => text && !text.includes("See more"));
 
       const productInfo = {};
-      document
-        .querySelectorAll(".a-section.a-spacing-medium .a-container tr")
-        .forEach((row) => {
-          const cells = row.querySelectorAll("td, th");
-          if (cells.length >= 2) {
-            const key = cells[0].textContent.trim();
-            const value = cells[1].textContent.trim();
-            if (key && value) productInfo[key] = value;
+      const productInfoSection = document.querySelector(
+        "#productDetails_techSpec_section_1"
+      );
+      console.log("Product Info Section:", productInfoSection);
+      if (productInfoSection) {
+        productInfoSection.querySelectorAll("tr").forEach((row) => {
+          const key = row.querySelector("th")?.innerText.trim();
+          const value = row.querySelector("td")?.innerText.trim();
+          if (key && value) {
+            productInfo[key] = value;
           }
         });
+      }
+      console.log("Product Info:", productInfo);
 
       const productImages = Array.from(
         document.querySelectorAll("#altImages .a-button-text img")
@@ -67,15 +71,11 @@ const scrapeAmazonProduct = async (url) => {
           (src) => src && !src.includes("play-icon") && !src.includes("video")
         );
 
-      const manufacturerImages = [];
-      const manufacturerSection = document.querySelector("#productDescription");
-      if (manufacturerSection) {
-        manufacturerImages.push(
-          ...Array.from(manufacturerSection.querySelectorAll("img")).map(
-            (img) => img.src
-          )
-        );
-      }
+      const manufacturerImages = Array.from(
+        document.querySelectorAll(
+          ".celwidget.aplus-module.premium-module-2-fullbackground-image img"
+        )
+      ).map((img) => img.getAttribute("data-src") || img.getAttribute("src"));
 
       return {
         productName,
@@ -134,8 +134,6 @@ const scrapeAmazonProduct = async (url) => {
           });
         return offers;
       });
-
-      console.log("Extracted Bank Offers:", bankOffers);
     } else {
       console.log("No bank offer section found.");
     }
