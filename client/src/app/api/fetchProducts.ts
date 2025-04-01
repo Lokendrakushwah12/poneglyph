@@ -1,8 +1,9 @@
-export const API_BASE_URL = "http://localhost:5000";
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+console.log("BASE_URL", BASE_URL);
 
 export const fetchProducts = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/v1/products`);
+    const response = await fetch(`${BASE_URL}/api/v1/products`);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch jobs: ${response.status} ${response.statusText}`,
