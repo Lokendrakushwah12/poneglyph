@@ -8,12 +8,28 @@ const scrapeAmazonProduct = async (url) => {
   console.log(`Starting to scrape: ${url}`);
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-blink-features=AutomationControlled",
+    ],
   });
-
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1366, height: 768 });
+
+    async function autoScroll(page) {
+      let previousHeight;
+      while (true) {
+        previousHeight = await page.evaluate("document.body.scrollHeight");
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
+
+        let newHeight = await page.evaluate("document.body.scrollHeight");
+        if (newHeight === previousHeight) break; // Stop when no more reviews are loaded
+      }
+    }
+
+    await autoScroll(page);
 
     await page.goto(url, {
       waitUntil: "networkidle2",

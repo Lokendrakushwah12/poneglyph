@@ -8,6 +8,16 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     const { url } = req.body;
+
+    const existingProduct = await ProductSchema.findOne({ url });
+
+    if (existingProduct) {
+      return res.status(200).json({
+        message: "Product already added",
+        product: existingProduct,
+      });
+    }
+
     const products = await scrapeAmazonProduct(url);
     const reviewSummary = await generateReviewSummary(products.topReviews);
     const newProduct = new ProductSchema({
@@ -25,7 +35,9 @@ router.post("/", async (req, res) => {
       url,
     });
 
-    res.status(200).json({ products });
+    await newProduct.save();
+
+    res.status(200).json({ newProduct });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

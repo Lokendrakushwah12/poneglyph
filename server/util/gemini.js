@@ -1,27 +1,41 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { GEMINI_API_KEY } = require("../config");
+const axios = require("axios");
+const { GEMINI_API_KEY, GEMINI_API_URL } = require("../config");
 
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-
-const generateReviewSummary = async (reviews) => {
+const generateReviewSummary = async (topReviews) => {
   try {
-    if (!reviews || reviews.length === 0) return "No customer reviews available.";
+    const prompt = `Summarize the following reviews in a single paragraph:\n\n${topReviews.join(
+      "\n\n"
+    )}`;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const response = await axios.post(
+      `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+      {
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    const prompt = `
-      You are a product review analyzer. Summarize the following customer reviews into a short, informative summary that highlights the key points (pros and cons):
-      
-      ${reviews.join("\n\n")}
-      
-      Provide a concise review summary in 2-3 sentences.
-    `;
+    const summary = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!summary) {
+      throw new Error("No response from Gemini API");
+    }
 
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+    return summary;
   } catch (error) {
-    console.error("Gemini AI Error:", error);
-    return "Could not generate review summary.";
+    console.error("Gemini AI Error:", error.message);
+    if (error.response) {
+      console.error("Gemini AI Response:", JSON.stringify(error.response.data, null, 2));
+    }
+    throw new Error("Failed to generate review summary");
   }
 };
 
