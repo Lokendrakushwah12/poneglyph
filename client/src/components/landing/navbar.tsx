@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={"sticky inset-x-0 top-0 z-[100] w-full transform px-4 py-2"}
+        className={"sticky inset-x-0 top-0 z-[100] bg-gradient-to-b from-background to-transparent w-full transform px-4 py-2"}
       >
         <div className="mx-auto flex h-fit w-full items-center justify-center p-1 pr-1.5">
           <div className="flex w-full items-center justify-between">

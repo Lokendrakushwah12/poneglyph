@@ -4,7 +4,10 @@ interface Product {
   numRatings: number;
   sellingPrice: string;
   totalDiscount: string;
-  bankOffers: string[];
+  bankOffers: {
+    offerName: string;
+    offerDetails: string;
+  };
   aboutItem: string;
   productInfo: string[];
   productImages: string[];
@@ -13,3 +16,4 @@ interface Product {
 }
 
 export type { Product };
+

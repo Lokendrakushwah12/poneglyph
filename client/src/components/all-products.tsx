@@ -8,7 +8,7 @@ const AllProducts = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start pb-16 pt-24 text-white">
-      <h1 className="text-3xl font-bold">All Products</h1>
+      <h1 className="text-3xl text-foreground font-bold">All Products</h1>
       <div className="container mt-12 w-full max-w-5xl">
         {status === "error" && <p>Error: {isError}</p>}
         {status === "success" && (

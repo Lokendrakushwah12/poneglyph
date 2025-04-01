@@ -18,7 +18,7 @@ const ProductCard = (data: Product) => {
   console.log("ProductCard Data:", data);
   return (
     <div className="rounded-xl border bg-muted/10 p-4">
-      <h2 className="text-xl font-semibold">{data.productName}</h2>
+      <h2 className="text-xl text-foreground font-semibold">{data.productName}</h2>
       <p className="text-sm text-muted-foreground">Rating: {data.rating}</p>
       <p className="text-sm text-muted-foreground">Number of Ratings: {data.numRatings}</p>
       <p className="text-sm text-muted-foreground">Selling Price: {data.sellingPrice}</p>

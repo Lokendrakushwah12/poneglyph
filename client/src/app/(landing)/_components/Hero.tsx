@@ -41,10 +41,7 @@ const Hero = ({
 
       <p className="max-w-xl text-balance text-sm text-muted-foreground md:text-base">
         Poneglyph is a web scraping and analytics platform specifically designed
-        for Amazon India smart TV products. Inspired by the mysterious stone
-        tablets from One Piece, this tool deciphers product pages to reveal
-        comprehensive information, including specifications, pricing, and
-        customer sentiment.
+        for Amazon India products.
       </p>
 
       <div className="w-full max-w-xl space-y-2">

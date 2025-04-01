@@ -242,7 +242,8 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
                         key={index}
                         className="rounded-md border border-green-400/20 bg-green-400/10 p-3 text-sm"
                       >
-                        {offer}
+                        <div className="font-semibold">{offer.title}</div>
+                        <div>{offer.description}</div>
                       </div>
                     ))}
                   </div>
