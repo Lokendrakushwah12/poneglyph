@@ -4,7 +4,7 @@ const scrape = require("./scrape.js");
 
 const router = Router();
 
-router.use("/product", product);
+router.use("/products", product);
 router.use("/scrape", scrape);
 
 module.exports = router;

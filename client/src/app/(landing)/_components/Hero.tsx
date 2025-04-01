@@ -1,8 +1,9 @@
 "use client";
+
+import { useScrapeProduct } from "@/app/api/useScrapeProduct";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Product } from "@/types/product";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -12,39 +13,24 @@ const Hero = ({
   onProductFetched: (product: Product) => void;
 }) => {
   const [url, setUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleScrape = async () => {
-    // Validate URL
+  const { mutate, isPending, isError, error } = useScrapeProduct();
+
+  const handleScrape = () => {
     if (!url.includes("amazon.in")) {
-      setError("Please enter a valid Amazon India product URL");
+      alert("Please enter a valid Amazon India product URL");
       return;
     }
 
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await axios.post("http://localhost:5000/api/v1/scrape", {
-        url,
-      });
-
-      if (onProductFetched) {
-        onProductFetched(response.data.newProduct);
-      }
-
-      setUrl("");
-    } catch (err) {
-      setError(
-        axios.isAxiosError(err)
-          ? err.response?.data?.error || "Failed to decode product information"
-          : "An unexpected error occurred",
-      );
-      console.error("Error scraping product:", err);
-    } finally {
-      setLoading(false);
-    }
+    mutate(url, {
+      onSuccess: (product: Product) => {
+        onProductFetched(product);
+        setUrl("");
+      },
+      onError: (error: any) => {
+        console.error("Error:", error);
+      },
+    });
   };
 
   return (
@@ -70,15 +56,17 @@ const Hero = ({
           className="w-full"
         />
 
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {isError && (
+          <p className="text-sm text-red-500">{(error as Error)?.message}</p>
+        )}
 
         <Button
           variant="default"
           className="w-full sm:w-auto"
           onClick={handleScrape}
-          disabled={loading || !url}
+          disabled={isPending}
         >
-          {loading ? (
+          {isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Decoding Product...

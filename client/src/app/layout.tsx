@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/layouts/theme-provider";
+import QueryProvider from "@/providers/query-provider";
 import "@/styles/globals.css";
 import { type Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
@@ -25,7 +26,9 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`min-h-screen bg-background font-sans antialiased ${playfair.variable} ${inter.className}`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

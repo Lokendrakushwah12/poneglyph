@@ -1,9 +1,9 @@
 "use client";
+import AllProducts from "@/components/all-products";
 import ProductDetails from "@/components/ui/product-details";
+import { Product } from "@/types/product";
 import { useState } from "react";
 import Hero from "./_components/Hero";
-import { Product } from "@/types/product";
-
 
 const HomePage = () => {
   const [product, setProduct] = useState<Product | null>(null);
@@ -23,6 +23,7 @@ const HomePage = () => {
           <ProductDetails product={product} />
         </div>
       )}
+      <AllProducts />
     </main>
   );
 };
