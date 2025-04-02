@@ -5,8 +5,6 @@ import ProductCard from "./product-card";
 const AllProducts = () => {
   const { data, isLoading, status, isError } = useProducts();
 
-  console.log("Data:", data);
-
   return (
     <div className="flex min-h-screen max-w-[1280px] flex-col items-start justify-start px-4 pb-16 pt-24 text-white">
       <h1 className="px-1 text-left font-playfair text-3xl text-foreground">
