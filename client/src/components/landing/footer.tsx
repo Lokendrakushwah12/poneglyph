@@ -13,7 +13,7 @@ const Footer = () => {
             <Link
               target="_blank"
               rel="noreferrer"
-              href="/"
+              href="https://x.com/Lokendratwt"
               className="p-1 text-sm text-muted-foreground transition-all hover:text-foreground"
             >
               X (Twitter) ↗
@@ -21,7 +21,7 @@ const Footer = () => {
             <Link
               target="_blank"
               rel="noreferrer"
-              href="/"
+              href="https://www.linkedin.com/in/lokendrakushwah12/"
               className="p-1 text-sm text-muted-foreground transition-all hover:text-foreground"
             >
               LinkedIn ↗
