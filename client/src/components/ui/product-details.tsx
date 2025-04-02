@@ -137,7 +137,7 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
                       AI Review Summary
                     </h3>
                     <p className="rounded-md bg-muted/30 p-3 text-sm italic">
-                      "{aiReviewSummary}"
+                      &quot;{aiReviewSummary}&quot;
                     </p>
                   </div>
                 )}
@@ -192,7 +192,9 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
                             key={index}
                             className="overflow-hidden rounded-md border"
                           >
-                            <img
+                            <Image
+                              height={500}
+                              width={500}
                               src={img}
                               alt={`Product image ${index + 1}`}
                               className="h-auto w-full object-contain"
@@ -215,7 +217,9 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
                             key={index}
                             className="overflow-hidden rounded-md border"
                           >
-                            <img
+                            <Image
+                              height={500}
+                              width={500}
                               src={img}
                               alt={`Manufacturer image ${index + 1}`}
                               className="h-auto w-full object-contain"

@@ -4,7 +4,7 @@ import { fetchProducts } from "./fetchProducts";
 
 export const useProducts = () => {
   return useQuery<{ products: Product[] }, Error>({
-    queryKey: ["jobs"],
+    queryKey: ["products"],
     queryFn: fetchProducts,
     staleTime: 1000 * 60 * 5,
   });
