@@ -1,10 +1,10 @@
 import type { Product } from "@/types/product";
-import { Star, Tag, CreditCard, ShoppingBag, Percent } from "lucide-react";
+import { CreditCard, Percent, Star, Tag } from "lucide-react";
 
 const ProductCard = (data: Product) => {
   console.log("ProductCard Data:", data);
   return (
-    <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 shadow-md shadow-[#777]/10 dark:shadow-black/20  hover:shadow-black-40 transition-all duration-300 hover:shadow-[#777]/20">
+    <div className="hover:shadow-black-40 rounded-2xl border border-primary/20 bg-primary/5 p-6 shadow-md shadow-[#777]/10 transition-all duration-300 hover:shadow-[#777]/20 dark:shadow-black/20">
       <div className="flex items-start justify-between">
         <h2 className="text-xl font-semibold text-foreground">
           {data.productName}
@@ -12,9 +12,7 @@ const ProductCard = (data: Product) => {
         <div className="flex items-center gap-1 rounded-full bg-primary/80 px-2 py-1">
           <Star size={16} className="fill-yellow-500 text-yellow-500" />
           <span className="text-sm font-medium">{data.rating}</span>
-          <span className="text-xs text-white/70">
-            ({data.numRatings})
-          </span>
+          <span className="text-xs text-white/70">({data.numRatings})</span>
         </div>
       </div>
 
