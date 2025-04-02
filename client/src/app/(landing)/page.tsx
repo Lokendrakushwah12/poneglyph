@@ -11,6 +11,7 @@ const HomePage = () => {
 
   const handleProductFetched = (productData: Product) => {
     setProduct(productData);
+    console.log("Product fetched:", productData);
     setIsLoading(false);
   };
 

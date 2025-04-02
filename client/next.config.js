@@ -5,6 +5,16 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    images: {
+        domains: [
+        "m.media-amazon.com",
+        "images-na.ssl-images-amazon.com",
+        "images-eu.ssl-images-amazon.com",
+        "images-na.ssl-images-amazon.in",
+        "images-eu.ssl-images-amazon.in",
+        ],
+    },
+};
 
 export default config;

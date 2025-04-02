@@ -29,6 +29,11 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta name="robots" content="index, follow" />
         <meta name="author" content="Lokendra Kushwah" />
+        {/* image */}
+        <meta
+          name="image"
+          content="/Open-graph.png"
+        />
       </Head>
       <body
         suppressHydrationWarning
