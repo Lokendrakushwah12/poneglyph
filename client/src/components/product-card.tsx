@@ -2,7 +2,6 @@ import type { Product } from "@/types/product";
 import { CreditCard, Percent, Star, Tag } from "lucide-react";
 
 const ProductCard = (data: Product) => {
-  console.log("ProductCard Data:", data);
   return (
     <div className="hover:shadow-black-40 rounded-2xl border border-primary/20 bg-primary/5 p-6 shadow-md shadow-[#777]/10 transition-all duration-300 hover:shadow-[#777]/20 dark:shadow-black/20">
       <div className="flex items-start justify-between">

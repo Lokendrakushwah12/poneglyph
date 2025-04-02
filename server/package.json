@@ -14,13 +14,16 @@
   "dependencies": {
     "@google-cloud/vertexai": "^1.9.3",
     "@google/generative-ai": "^0.24.0",
+    "@sparticuz/chromium": "^133.0.0",
     "@vercel/node": "^5.1.14",
     "axios": "^1.8.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "mongoose": "^8.13.1",
-    "puppeteer": "^24.4.0"
+    "puppeteer": "^24.4.0",
+    "puppeteer-core": "^24.5.0",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

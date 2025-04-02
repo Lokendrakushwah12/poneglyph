@@ -1,18 +1,24 @@
-const puppeteer = require("puppeteer");
+const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer-core");
 
 const scrapeAmazonProduct = async (url) => {
   if (!url.includes("amazon.in")) {
     throw new Error("URL must be from Amazon India");
   }
 
+  const executablePath = await chromium.executablePath();
   console.log(`Starting to scrape: ${url}`);
   const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-blink-features=AutomationControlled",
-    ],
+    args: chromium.args,
+    executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+    // headless: true,
+    // args: [
+    //   "--no-sandbox",
+    //   "--disable-setuid-sandbox",
+    //   "--disable-blink-features=AutomationControlled",
+    // ],
   });
   try {
     const page = await browser.newPage();
