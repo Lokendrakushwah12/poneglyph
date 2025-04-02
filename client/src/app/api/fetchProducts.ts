@@ -1,7 +1,5 @@
 import { Product } from "@/types/product";
-
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-console.log("BASE_URL", BASE_URL);
 
 export const fetchProducts = async (): Promise<{ products: Product[] }> => {
   try {
@@ -11,8 +9,8 @@ export const fetchProducts = async (): Promise<{ products: Product[] }> => {
         `Failed to fetch jobs: ${response.status} ${response.statusText}`,
       );
     }
-    const data = await response.json();
-    return data as { products: Product[] };
+    const data: unknown = await response.json();
+    return { products: data as Product[] };
   } catch (error) {
     console.error("Error fetching jobs:", error);
     throw error;
