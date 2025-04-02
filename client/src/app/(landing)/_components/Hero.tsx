@@ -35,7 +35,7 @@ const Hero = ({
 
   return (
     <section className="container relative flex flex-col items-center gap-4 py-12 text-center text-foreground">
-      <h1 className="font-playfair text-4xl font-medium tracking-tighter text-foreground md:text-7xl lg:leading-[1.1]">
+      <h1 className="font-playfair text-5xl font-medium tracking-tighter text-foreground md:text-7xl lg:leading-[1.1]">
         Poneglyph
       </h1>
 

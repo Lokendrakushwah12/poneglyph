@@ -7,7 +7,7 @@ export const fetchProducts = async (): Promise<{ products: Product[] }> => {
     const response = await fetch(`${BASE_URL}/api/v1/products`);
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch products: ${response.status} ${response.statusText}`,
+        `Failed to fetch products: ${response.status} ${response.statusText}`
       );
     }
 
@@ -17,12 +17,9 @@ export const fetchProducts = async (): Promise<{ products: Product[] }> => {
       typeof data === "object" &&
       data !== null &&
       "products" in data &&
-      typeof data.products === "object" &&
-      data.products !== null &&
-      "products" in data.products &&
-      Array.isArray(data.products.products)
+      Array.isArray(data.products)
     ) {
-      return { products: data.products.products as Product[] };
+      return data as { products: Product[] };
     }
 
     throw new Error("Invalid response format");
