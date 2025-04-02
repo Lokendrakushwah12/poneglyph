@@ -1,7 +1,7 @@
 "use client";
 import AllProducts from "@/components/all-products";
 import ProductDetails from "@/components/ui/product-details";
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
 import { useState } from "react";
 import Hero from "./_components/Hero";
 

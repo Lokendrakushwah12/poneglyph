@@ -1,5 +1,6 @@
 import { useProducts } from "@/app/api/useProducts";
 import ProductCard from "./product-card";
+import { Product } from "@/types/product";
 
 const AllProducts = () => {
   const { data, status, isError } = useProducts();
@@ -13,7 +14,7 @@ const AllProducts = () => {
         {status === "error" && <p>Error: {isError}</p>}
         {status === "success" && (
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {data.products.map((product: any, index: number) => (
+            {data?.products.map((product: Product, index: number) => (
               <ProductCard key={index} {...product} />
             ))}
           </ul>

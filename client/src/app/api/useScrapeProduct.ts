@@ -1,8 +1,9 @@
+import { Product } from "@/types/product";
 import { useMutation } from "@tanstack/react-query";
 import { scrapeProduct } from "./scrapeProduct";
 
 export const useScrapeProduct = () => {
-  const mutation = useMutation({
+  const mutation = useMutation<Product, Error, string>({
     mutationFn: scrapeProduct,
     onSuccess: (data) => {
       console.log("Product scraped successfully:", data);

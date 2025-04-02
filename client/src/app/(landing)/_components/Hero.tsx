@@ -3,7 +3,7 @@
 import { useScrapeProduct } from "@/app/api/useScrapeProduct";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -27,7 +27,7 @@ const Hero = ({
         onProductFetched(product);
         setUrl("");
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         console.error("Error:", error);
       },
     });
@@ -54,7 +54,11 @@ const Hero = ({
         />
 
         {isError && (
-          <p className="text-sm text-red-500">{(error as Error)?.message}</p>
+          <p className="text-sm text-red-500">
+            {error instanceof Error
+              ? error.message
+              : "An unknown error occurred"}
+          </p>
         )}
 
         <Button

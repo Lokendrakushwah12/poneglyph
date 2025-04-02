@@ -1,18 +1,5 @@
-import { Product } from "@/types/product";
 
-// interface Product {
-//   productName: string;
-//   rating: number;
-//   numRatings: number;
-//   sellingPrice: string;
-//   totalDiscount: string;
-//   bankOffers: string[];
-//   aboutItem: string;
-//   productInfo: string[];
-//   productImages: string[];
-//   manufacturerImages: string[];
-//   aiReviewSummary: string;
-// }
+import type { Product } from "@/types/product";
 
 const ProductCard = (data: Product) => {
   console.log("ProductCard Data:", data);

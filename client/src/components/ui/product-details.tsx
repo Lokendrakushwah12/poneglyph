@@ -1,19 +1,20 @@
 import { Badge } from "@/components/ui/badge";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
+import Image from "next/image";
 import { useState } from "react";
 
 const ProductDetails = ({ product }: { product: Product | null }) => {
   const [selectedImage, setSelectedImage] = useState(
-    product?.productImages?.[0] || "",
+    product?.productImages?.[0] ?? "",
   );
 
   if (!product) return null;
@@ -76,7 +77,9 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
               <div>
                 {selectedImage && (
                   <div className="mb-4 overflow-hidden rounded-lg border">
-                    <img
+                    <Image
+                      width={500}
+                      height={500}
                       src={selectedImage}
                       alt={productName}
                       className="h-auto w-full object-contain"
@@ -95,7 +98,9 @@ const ProductDetails = ({ product }: { product: Product | null }) => {
                         }`}
                         onClick={() => setSelectedImage(img)}
                       >
-                        <img
+                        <Image
+                          width={500}
+                          height={500}
                           src={img}
                           alt={`Thumbnail ${index}`}
                           className="h-full w-full object-cover"
