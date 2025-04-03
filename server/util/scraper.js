@@ -6,12 +6,12 @@ const scrapeAmazonProduct = async (url) => {
     throw new Error("URL must be from Amazon India");
   }
 
-  const executablePath = await chromium.executablePath();
   console.log(`Starting to scrape: ${url}`);
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    executablePath,
-    headless: chromium.headless,
+    args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: true,
     ignoreHTTPSErrors: true,
     // headless: true,
     // args: [
